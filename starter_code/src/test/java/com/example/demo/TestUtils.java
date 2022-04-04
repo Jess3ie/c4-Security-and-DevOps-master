@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import com.example.demo.model.persistence.User;
+
 import java.lang.reflect.Field;
 
 public class TestUtils {
@@ -26,4 +28,6 @@ public class TestUtils {
 
 
     }
+
+
 }

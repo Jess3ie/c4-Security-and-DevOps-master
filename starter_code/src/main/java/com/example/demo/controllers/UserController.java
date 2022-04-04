@@ -44,7 +44,9 @@ public class UserController {
 	@GetMapping("/{username}")
 	public ResponseEntity<User> findByUserName(@PathVariable String username) {
 		User user = userRepository.findByUsername(username);
+		log.error("Cannot find user with that username", findByUserName(username));
 		return user == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(user);
+
 	}
 
 	@PostMapping("/create")
@@ -52,7 +54,7 @@ public class UserController {
 		User user = new User();
 		user.setUsername(createUserRequest.getUsername());
 
-		log.info("User name set with ", createUserRequest.getUsername()); //printing username
+		log.info("Username set with ", createUserRequest.getUsername()); //printing username
 		Cart cart = new Cart();
 
 
@@ -62,10 +64,12 @@ public class UserController {
 				!createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())){
 			//System.out.println("Error - Either length is less than 7 or pass and conf pass do not match. Unable to create ",
 			//		createUserRequest.getUsername());
+			log.error("Cannot create user, invalid password", createUserRequest.getUsername());
 			return ResponseEntity.badRequest().build();
 		}
 		user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
 		userRepository.save(user);
+		log.info("New user created", createUserRequest.getUsername());
 		return ResponseEntity.ok(user);
 	}
 	
