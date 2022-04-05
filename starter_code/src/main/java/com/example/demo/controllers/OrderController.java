@@ -33,7 +33,7 @@ public class OrderController {
 	public ResponseEntity<UserOrder> submit(@PathVariable String username) {
 		User user = userRepository.findByUsername(username);
 		if(user == null) {
-			log.error("Cannot submit order, username is null", userRepository.findByUsername(username));
+			log.error("Cannot submit order, username: %s is invalid", username);
 			return ResponseEntity.notFound().build();
 		}
 		UserOrder order = UserOrder.createFromCart(user.getCart());
@@ -46,7 +46,7 @@ public class OrderController {
 	public ResponseEntity<List<UserOrder>> getOrdersForUser(@PathVariable String username) {
 		User user = userRepository.findByUsername(username);
 		if(user == null) {
-			log.error("Cannot get Orders, username is null", userRepository.findByUsername(username));
+			log.error("Cannot get Orders, username: %s is invalid", username);
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok(orderRepository.findByUser(user));
